@@ -76,28 +76,31 @@ router.post("/", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-    try {
-      const courseDeleted = await courseService.deleteCourse(req.params.id);
-      if (!courseDeleted) {
-        return res.status(404).json({
-          type: "error",
-          title: "Course Not Found",
-          status: 404,
-          detail: `Course with id ${req.params.id} not found`,
-          instance: req.originalUrl,
-        });
-      }
-      res.status(204).send();
-    } catch (error) {
-      console.error("Internal Server Error:", error);
-      return res.status(500).json({
+  try {
+    const courseDeleted = await courseService.deleteCourse(req.params.id);
+    if (!courseDeleted) {
+      return res.status(404).json({
         type: "error",
-        title: "Internal Server Error",
-        status: 500,
-        detail: "An unexpected error occurred",
+        title: "Course Not Found",
+        status: 404,
+        detail: `Course with id ${req.params.id} not found`,
         instance: req.originalUrl,
       });
     }
-  });
-  
+    return res.status(204).json({
+      title: "Course deleted successfully"
+    });
+  } catch (error) {
+    console.error("Internal Server Error:", error);
+    return res.status(500).json({
+      type: "error",
+      title: "Internal Server Error",
+      status: 500,
+      detail: "An unexpected error occurred",
+      instance: req.originalUrl,
+    });
+  }
+});
+
+ 
 export default router;
