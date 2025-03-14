@@ -59,3 +59,46 @@ router.get("/:id", async (req, res) => {
       });
     }
   }); 
+
+  router.post("/", async (req, res) => {
+    try{
+      const course = new Course(null, req.body.title, req.body.description);
+      const courseCreated = await courseService.createCourse(course);
+      res.json(courseCreated);
+    } catch (error) {
+      console.error("Internal Server Error:", error);
+      return res.status(500).json({
+        type: "error",
+        title: "Internal Server Error",
+        status: 500,
+        detail: "An unexpected error occurred",
+        instance: req.originalUrl,
+      });
+    }
+  });
+  
+  router.delete("/:id", async (req, res) => {
+      try {
+          const courseDeleted = await courseService.deleteCourse(req.params.id);
+          if (!courseDeleted) {
+          return res.status(404).json({
+              type: "error",
+              title: "Course Not Found",
+              status: 404,
+              detail: `Course with id ${req.params.id} not found`,
+              instance: req.originalUrl,
+          });
+          }
+          res.json(courseDeleted);
+      } catch (error) {
+          console.error("Internal Server Error:", error);
+          return res.status(500).json({
+          type: "error",
+          title: "Internal Server Error",
+          status: 500,
+          detail: "An unexpected error occurred",
+          instance: req.originalUrl,
+          });
+      }
+  });
+  export default router;
