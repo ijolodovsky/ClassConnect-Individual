@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  # Servicio de la base de datos
+  db:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER:          # Cambia por tu usuario
+      POSTGRES_PASSWORD:  # Cambia por tu contraseña
+      POSTGRES_DB:       # Cambia por el nombre de tu base de datos
+    ports:
+      - "5432:5432"                 # Exponiendo el puerto de PostgreSQL
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Para persistir los datos
+
+  # Servicio de la API (Node.js/Express)
+  api:
+    build: .
+    container_name: node_api
+    ports:
+      - "3000:3000"  # Exponiendo el puerto de la API
+    depends_on:
+      - db  # El contenedor de la API depende del contenedor de la base de datos
+    environment:
+      DB_HOST: db  # Nombre del servicio de la base de datos
+      DB_PORT: 5432
+      DB_USER: myuser
+      DB_PASSWORD: mypassword
+      DB_NAME: mydatabase
+    networks:
+      - backend
+
+# Volúmenes para persistir datos
+volumes:
+  postgres_data:
+
+networks:
+  backend:
+    driver: bridge
