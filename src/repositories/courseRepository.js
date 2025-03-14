@@ -38,4 +38,34 @@ export default class CourseRepository {
     }
     return returnEntity;
   }
+
+  async createCourse(course) {
+    let rowsAffected = 0;
+    try{
+        const sql = "INSERT INTO courses (title, description) VALUES ($1, $2) RETURNING *";
+        const result = await this.DBClient.query(sql, [course.title, course.description]);
+        
+        if(result.rowCount > 0){
+            rowsAffected = result.rowCount;
+        }
+    } catch (error) {
+      console.error(error);
+    }
+    return rowsAffected>0;
+  }
+
+  async deleteCourse(id) {
+    let rowsAffected = 0;
+    try{
+        const sql = "DELETE FROM courses WHERE id = $1 RETURNING *";
+        const result = await this.DBClient.query(sql, [id]);
+        
+        if(result.rowCount > 0){
+            rowsAffected = result.rowCount;
+        }
+    } catch (error) {
+      console.error(error);
+    }
+    return rowsAffected>0;
+  }
 }
