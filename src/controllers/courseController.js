@@ -88,7 +88,7 @@ router.delete("/:id", async (req, res) => {
       });
     }
     return res.status(204).json({
-      title: "Course deleted successfully"
+      title: "Course deleted successfully",
     });
   } catch (error) {
     console.error("Internal Server Error:", error);
@@ -102,5 +102,4 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
- 
 export default router;

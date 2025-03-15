@@ -11,7 +11,6 @@ describe("All Courses", () => {
     });
   });
 
-
   describe("GET /courses/:id", () => {
     it("should return a course by ID with status 200", async () => {
       const courseId = 1;
@@ -30,7 +29,6 @@ describe("All Courses", () => {
     });
   });
 
-
   describe("POST /courses", () => {
     it("should create a new course and return it with status 201", async () => {
       const newCourse = {
@@ -42,7 +40,10 @@ describe("All Courses", () => {
 
       expect(response.status).toBe(201);
       expect(response.body.data).toHaveProperty("title", newCourse.title);
-      expect(response.body.data).toHaveProperty("description", newCourse.description);
+      expect(response.body.data).toHaveProperty(
+        "description",
+        newCourse.description
+      );
     });
 
     it("should return 400 if title or description is missing", async () => {
@@ -55,7 +56,6 @@ describe("All Courses", () => {
       expect(response.body.detail).toBe("Title and description are required");
     });
   });
-
 
   describe("DELETE /courses/:id", () => {
     it("should delete a course with status 204", async () => {
