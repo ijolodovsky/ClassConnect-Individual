@@ -1,40 +1,36 @@
 version: '3.8'
 
 services:
-  # Servicio de la base de datos
   db:
     image: postgres:latest
-    container_name: postgres_db
+    container_name: mi_postgres
+    restart: always
     environment:
-      POSTGRES_USER:          # Cambia por tu usuario
-      POSTGRES_PASSWORD:  # Cambia por tu contraseña
-      POSTGRES_DB:       # Cambia por el nombre de tu base de datos
-    ports:
-      - "5432:5432"                 # Exponiendo el puerto de PostgreSQL
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
     volumes:
-      - postgres_data:/var/lib/postgresql/data  # Para persistir los datos
-
-  # Servicio de la API (Node.js/Express)
-  api:
-    build: .
-    container_name: node_api
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-      - "3000:3000"  # Exponiendo el puerto de la API
-    depends_on:
-      - db  # El contenedor de la API depende del contenedor de la base de datos
-    environment:
-      DB_HOST: db  # Nombre del servicio de la base de datos
-      DB_PORT: 5432
-      DB_USER: myuser
-      DB_PASSWORD: mypassword
-      DB_NAME: mydatabase
-    networks:
-      - backend
+      - "5432:5432"
 
-# Volúmenes para persistir datos
+  app:
+    build: .
+    container_name: mi_api
+    restart: always
+    environment:
+      DB_HOST: ${DATABASE_HOST}
+      DB_PORT: ${DATABASE_PORT}
+      DB_USER: ${DATABASE_USER}
+      DB_PASSWORD: ${DATABASE_PASSWORD}
+      DB_NAME: ${DB_DATABASE}
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+
 volumes:
   postgres_data:
-
-networks:
-  backend:
-    driver: bridge
