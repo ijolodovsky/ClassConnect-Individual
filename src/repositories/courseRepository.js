@@ -1,6 +1,6 @@
 const pkg = require("pg");
 require("dotenv").config();
-const logger = require("../logger"); // Importa el logger
+const logger = require("../logger");
 
 class CourseRepository {
   constructor() {
@@ -26,7 +26,7 @@ class CourseRepository {
         returnEntity = result.rows;
       }
     } catch (error) {
-      logger.error("Error al obtener todos los cursos:", error);  // Usamos logger.error
+      logger.error("Error al obtener todos los cursos:", error);  
     }
     return returnEntity;
   }
@@ -41,7 +41,7 @@ class CourseRepository {
         returnEntity = result.rows[0];
       }
     } catch (error) {
-      logger.error("Error al obtener el curso por ID:", error);  // Usamos logger.error
+      logger.error("Error al obtener el curso por ID:", error); 
     }
     return returnEntity;
   }
@@ -53,10 +53,10 @@ class CourseRepository {
       const result = await this.DBClient.query(sql, [course.title, course.description]);
   
       if (result.rowCount > 0) {
-        createdCourse = result.rows[0];  // Devuelve el curso creado
+        createdCourse = result.rows[0];
       }
     } catch (error) {
-      logger.error("Error al crear curso:", error);  // Usamos logger.error
+      logger.error("Error al crear curso:", error);  
     }
     return createdCourse;
   }
@@ -71,18 +71,18 @@ class CourseRepository {
         rowsAffected = result.rowCount;
       }
     } catch (error) {
-      logger.error("Error al eliminar curso:", error);  // Usamos logger.error
+      logger.error("Error al eliminar curso:", error); 
     }
     return rowsAffected > 0;
   }
 
-  // Opcionalmente puedes cerrar la conexión cuando ya no la necesites
+
   async closeConnection() {
     try {
       await this.DBClient.end();
-      logger.info('Conexión a la base de datos cerrada');  // Usamos logger.info
+      logger.info('Conexión a la base de datos cerrada');
     } catch (error) {
-      logger.error('Error al cerrar la conexión a la base de datos:', error);  // Usamos logger.error
+      logger.error('Error al cerrar la conexión a la base de datos:', error);
     }
   }
 }

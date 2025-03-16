@@ -41,9 +41,9 @@ describe("All Courses", () => {
         title: "Node.js Basics",
         description: "Learn the basics of Node.js for backend development",
       };
-
+  
       const response = await request(app).post("/courses").send(newCourse);
-
+  
       expect(response.status).toBe(201);
       expect(response.body.data).toHaveProperty("title", newCourse.title);
       expect(response.body.data).toHaveProperty(
@@ -51,15 +51,42 @@ describe("All Courses", () => {
         newCourse.description
       );
     });
-
+  
     it("should return 400 if title or description is missing", async () => {
       const invalidCourse = { title: "", description: "" };
-
+  
       const response = await request(app).post("/courses").send(invalidCourse);
-
+  
       expect(response.status).toBe(400);
       expect(response.body.title).toBe("Bad Request");
       expect(response.body.detail).toBe("Title and description are required");
+    });
+  
+    // Test para verificar que la descripción debe tener entre 50 y 255 caracteres
+    it("should return 400 if description is too short", async () => {
+      const shortDescriptionCourse = {
+        title: "Short Description Course",
+        description: "Too short",  // Menos de 50 caracteres
+      };
+  
+      const response = await request(app).post("/courses").send(shortDescriptionCourse);
+  
+      expect(response.status).toBe(400);
+      expect(response.body.title).toBe("Bad Request");
+      expect(response.body.detail).toBe("Description must be between 50 and 255 characters");
+    });
+  
+    it("should return 400 if description is too long", async () => {
+      const longDescriptionCourse = {
+        title: "Long Description Course",
+        description: "A".repeat(256),  // Más de 255 caracteres
+      };
+  
+      const response = await request(app).post("/courses").send(longDescriptionCourse);
+  
+      expect(response.status).toBe(400);
+      expect(response.body.title).toBe("Bad Request");
+      expect(response.body.detail).toBe("Description must be between 50 and 255 characters");
     });
   });
 
@@ -81,4 +108,6 @@ describe("All Courses", () => {
       expect(response.body.title).toBe("Course Not Found");
     });
   });
+
+  
 });

@@ -37,7 +37,9 @@ router.get("/:id", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
   try {
-    if (!req.body.title || !req.body.description) {
+    const { title, description } = req.body;
+
+    if (!title || !description) {
       return res.status(400).json({
         type: "about:blank",
         title: "Bad Request",
@@ -47,7 +49,16 @@ router.post("/", async (req, res, next) => {
       });
     }
 
-    const course = new Course(null, req.body.title, req.body.description);
+    if (description.length < 50 || description.length > 255) {
+      return res.status(400).json({
+        type: "about:blank",
+        title: "Bad Request",
+        status: 400,
+        detail: "Description must be between 50 and 255 characters",
+        instance: req.originalUrl,
+      });
+    }
+    const course = new Course(null, title, description);
     const courseCreated = await courseService.createCourse(course);
 
     if (courseCreated) {
@@ -65,6 +76,7 @@ router.post("/", async (req, res, next) => {
     next(error);
   }
 });
+
 
 router.delete("/:id", async (req, res, next) => {
   try {
