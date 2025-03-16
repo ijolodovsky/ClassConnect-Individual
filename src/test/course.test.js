@@ -1,7 +1,13 @@
 const request = require("supertest");
 const app = require("../server");
+const server = app.listen();
 
 describe("All Courses", () => {
+  
+  afterAll(() => {
+    server.close();
+  });
+
   describe("GET /courses", () => {
     it("should return all courses with status 200", async () => {
       const response = await request(app).get("/courses");
@@ -66,7 +72,6 @@ describe("All Courses", () => {
       expect(response.status).toBe(204); // No se espera cuerpo
       expect(response.body).toEqual({});  // No debe haber contenido en el cuerpo
     });
-  
 
     it("should return 404 if course is not found", async () => {
       const nonExistentId = "999999";
