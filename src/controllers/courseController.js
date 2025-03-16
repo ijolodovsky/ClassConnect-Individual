@@ -35,7 +35,7 @@ router.get("/:id", async (req, res) => {
       });
     }
 
-    res.json({ data: course });
+    res.status(200).json({ data: course });  // Asegúrate de devolver el status 200
   } catch (error) {
     console.error("Internal Server Error:", error);
     return res.status(500).json({
@@ -62,7 +62,18 @@ router.post("/", async (req, res) => {
 
     const course = new Course(null, req.body.title, req.body.description);
     const courseCreated = await courseService.createCourse(course);
-    res.status(201).json({ data: courseCreated });
+
+    if (courseCreated) {
+      return res.status(201).json({ data: courseCreated });  // Retorna el curso creado
+    } else {
+      return res.status(500).json({
+        type: "error",
+        title: "Internal Server Error",
+        status: 500,
+        detail: "An unexpected error occurred",
+        instance: req.originalUrl,
+      });
+    }
   } catch (error) {
     console.error("Internal Server Error:", error);
     return res.status(500).json({
@@ -87,9 +98,7 @@ router.delete("/:id", async (req, res) => {
         instance: req.originalUrl,
       });
     }
-    return res.status(204).json({
-      title: "Course deleted successfully",
-    });
+    return res.status(204).send(); // 204 No Content, sin cuerpo de respuesta
   } catch (error) {
     console.error("Internal Server Error:", error);
     return res.status(500).json({
@@ -101,5 +110,6 @@ router.delete("/:id", async (req, res) => {
     });
   }
 });
+
 
 module.exports = router;

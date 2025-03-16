@@ -13,7 +13,7 @@ describe("All Courses", () => {
 
   describe("GET /courses/:id", () => {
     it("should return a course by ID with status 200", async () => {
-      const courseId = 1;
+      const courseId = 2;
       const response = await request(app).get(`/courses/${courseId}`);
 
       expect(response.status).toBe(200);
@@ -59,13 +59,14 @@ describe("All Courses", () => {
 
   describe("DELETE /courses/:id", () => {
     it("should delete a course with status 204", async () => {
-      const courseId = 1;
-
+      const courseId = 1;  // Asegúrate de que este curso existe
+  
       const response = await request(app).delete(`/courses/${courseId}`);
-
-      expect(response.status).toBe(204);
-      expect(response.body.title).toBe("Course deleted successfully");
+  
+      expect(response.status).toBe(204); // No se espera cuerpo
+      expect(response.body).toEqual({});  // No debe haber contenido en el cuerpo
     });
+  
 
     it("should return 404 if course is not found", async () => {
       const nonExistentId = "999999";
