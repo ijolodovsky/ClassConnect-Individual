@@ -1,6 +1,6 @@
 const pkg = require("pg");
-
 require("dotenv").config();
+const logger = require("../logger"); // Importa el logger
 
 class CourseRepository {
   constructor() {
@@ -13,14 +13,7 @@ class CourseRepository {
       password: process.env.DATABASE_PASSWORD,
     });
 
-    console.log('Usuario:', process.env.DATABASE_USER);
-    console.log('Contraseña:', process.env.DATABASE_PASSWORD);
-
-    this.DBClient.connect()
-      .then(() => console.log('Conexión a la base de datos exitosa!'))
-      .catch(err => {
-        console.error('Error al conectar a la base de datos:', err);
-      });
+    this.DBClient.connect();
   }
 
   async getAllCourses() {
@@ -33,7 +26,7 @@ class CourseRepository {
         returnEntity = result.rows;
       }
     } catch (error) {
-      console.error(error);
+      logger.error("Error al obtener todos los cursos:", error);  // Usamos logger.error
     }
     return returnEntity;
   }
@@ -48,11 +41,10 @@ class CourseRepository {
         returnEntity = result.rows[0];
       }
     } catch (error) {
-      console.error(error);
+      logger.error("Error al obtener el curso por ID:", error);  // Usamos logger.error
     }
-    return returnEntity;  // Si no hay curso, se devuelve null
+    return returnEntity;
   }
-  
 
   async createCourse(course) {
     let createdCourse = null;
@@ -64,11 +56,10 @@ class CourseRepository {
         createdCourse = result.rows[0];  // Devuelve el curso creado
       }
     } catch (error) {
-      console.error("Error al crear curso:", error);
+      logger.error("Error al crear curso:", error);  // Usamos logger.error
     }
-    return createdCourse;  // Si no se crea el curso, devolverá null
+    return createdCourse;
   }
-  
 
   async deleteCourse(id) {
     let rowsAffected = 0;
@@ -80,7 +71,7 @@ class CourseRepository {
         rowsAffected = result.rowCount;
       }
     } catch (error) {
-      console.error(error);
+      logger.error("Error al eliminar curso:", error);  // Usamos logger.error
     }
     return rowsAffected > 0;
   }
@@ -89,9 +80,9 @@ class CourseRepository {
   async closeConnection() {
     try {
       await this.DBClient.end();
-      console.log('Conexión a la base de datos cerrada');
+      logger.info('Conexión a la base de datos cerrada');  // Usamos logger.info
     } catch (error) {
-      console.error('Error al cerrar la conexión a la base de datos:', error);
+      logger.error('Error al cerrar la conexión a la base de datos:', error);  // Usamos logger.error
     }
   }
 }
