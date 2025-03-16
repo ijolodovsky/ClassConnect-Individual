@@ -1,6 +1,6 @@
-import CourseService from "../services/courseService.js";
-import { Course } from "../entities/course.js";
-import { Router } from "express";
+const CourseService = require("../services/courseService.js");
+const Course = require("../entities/course.js");
+const { Router } = require("express");
 
 const courseService = new CourseService();
 const router = Router();
@@ -102,4 +102,4 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
-export default router;
+module.exports = router;

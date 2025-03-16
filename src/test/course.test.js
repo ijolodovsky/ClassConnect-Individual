@@ -1,5 +1,5 @@
-import request from "supertest";
-import app from "../src/server";
+const request = require("supertest");
+const app = require("../server");
 
 describe("All Courses", () => {
   describe("GET /courses", () => {

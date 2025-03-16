@@ -1,8 +1,8 @@
-import pkg from "pg";
+const pkg = require("pg");
 
-import { DBConfig } from "../dbConfig.js";
+const DBConfig = require("../dbConfig.js");
 
-export default class CourseRepository {
+class CourseRepository {
   constructor() {
     const { Client } = pkg;
     this.DBClient = new Client(DBConfig);
@@ -73,3 +73,5 @@ export default class CourseRepository {
     return rowsAffected > 0;
   }
 }
+
+module.exports = CourseRepository;

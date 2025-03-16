@@ -1,6 +1,6 @@
-import CourseRepository from "../repositories/courseRepository.js";
+const CourseRepository = require('../repositories/courseRepository');
 
-export default class CourseService {
+class CourseService {
   constructor() {
     this.courseRepository = new CourseRepository();
   }
@@ -24,3 +24,5 @@ export default class CourseService {
     return courseDeleted;
   }
 }
+
+module.exports = CourseService;
