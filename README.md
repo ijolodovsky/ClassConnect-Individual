@@ -65,8 +65,9 @@ Este comando iniciará el contenedor de la API en el puerto 3000. La API ahora e
 Para ejecutar las pruebas dentro de los contenedores, se usa el siguiente comando:
 
 ```bash
-docker-compose exec app npm test
+docker-compose run --rm -e NODE_ENV=test app npm test
 ```
+Donde run --rm inicia un nuevo contenedor temporalmente y lo elimina al finalizar para correr los tests.
 
 ## Detener los contenedores
 
