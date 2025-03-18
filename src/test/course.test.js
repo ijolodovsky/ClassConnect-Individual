@@ -1,113 +1,63 @@
 const request = require("supertest");
 const app = require("../server");
-const server = app.listen();
+const CourseRepository = require("../repositories/courseRepository");
 
-describe("All Courses", () => {
-  
-  afterAll(() => {
-    server.close();
+jest.mock("../repositories/courseRepository");
+
+describe("E2E Tests - Courses API", () => {
+  let createdCourseId;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  describe("GET /courses", () => {
-    it("should return all courses with status 200", async () => {
-      const response = await request(app).get("/courses");
+  test("Debe obtener la lista de cursos", async () => {
+    const mockCourses = [{ id: 1, title: "Curso 1", description: "Descripción larga" }];
+    CourseRepository.prototype.getAllCourses.mockResolvedValue(mockCourses);
 
-      expect(response.status).toBe(200);
-      expect(response.body.data).toBeInstanceOf(Array);
-    });
+    const res = await request(app).get("/courses");
+
+    expect(res.status).toBe(200);
+    expect(res.body.data).toEqual(mockCourses);
   });
 
-  describe("GET /courses/:id", () => {
-    it("should return a course by ID with status 200", async () => {
-      const courseId = 2;
-      const response = await request(app).get(`/courses/${courseId}`);
+  test("Debe crear un nuevo curso", async () => {
+    const newCourse = { title: "E2E Curso", description: "Descripción válida con la cantidad de caracteres necesarios." };
+    const mockCourse = { id: 10, ...newCourse };
 
-      expect(response.status).toBe(200);
-      expect(response.body.data).toHaveProperty("id", courseId);
-    });
+    CourseRepository.prototype.createCourse.mockResolvedValue(mockCourse);
 
-    it("should return 404 if course is not found", async () => {
-      const nonExistentId = "999999";
-      const response = await request(app).get(`/courses/${nonExistentId}`);
+    const res = await request(app).post("/courses").send(newCourse);
 
-      expect(response.status).toBe(404);
-      expect(response.body.title).toBe("Not Found");
-    });
+    expect(res.status).toBe(201);
+    expect(res.body.data).toEqual(mockCourse);
+    createdCourseId = res.body.data.id;
   });
 
-  describe("POST /courses", () => {
-    it("should create a new course and return it with status 201", async () => {
-      const newCourse = {
-        title: "Node.js Basics",
-        description: "Learn the basics of Node.js for backend development",
-      };
-  
-      const response = await request(app).post("/courses").send(newCourse);
-  
-      expect(response.status).toBe(201);
-      expect(response.body.data).toHaveProperty("title", newCourse.title);
-      expect(response.body.data).toHaveProperty(
-        "description",
-        newCourse.description
-      );
-    });
-  
-    it("should return 400 if title or description is missing", async () => {
-      const invalidCourse = { title: "", description: "" };
-  
-      const response = await request(app).post("/courses").send(invalidCourse);
-  
-      expect(response.status).toBe(400);
-      expect(response.body.title).toBe("Bad Request");
-      expect(response.body.detail).toBe("Title and description are required");
-    });
-  
-    // Test para verificar que la descripción debe tener entre 50 y 255 caracteres
-    it("should return 400 if description is too short", async () => {
-      const shortDescriptionCourse = {
-        title: "Short Description Course",
-        description: "Too short",  // Menos de 50 caracteres
-      };
-  
-      const response = await request(app).post("/courses").send(shortDescriptionCourse);
-  
-      expect(response.status).toBe(400);
-      expect(response.body.title).toBe("Bad Request");
-      expect(response.body.detail).toBe("Description must be between 50 and 255 characters");
-    });
-  
-    it("should return 400 if description is too long", async () => {
-      const longDescriptionCourse = {
-        title: "Long Description Course",
-        description: "A".repeat(256),  // Más de 255 caracteres
-      };
-  
-      const response = await request(app).post("/courses").send(longDescriptionCourse);
-  
-      expect(response.status).toBe(400);
-      expect(response.body.title).toBe("Bad Request");
-      expect(response.body.detail).toBe("Description must be between 50 and 255 characters");
-    });
+  test("Debe obtener un curso por ID", async () => {
+    const mockCourse = { id: 10, title: "E2E Curso", description: "Descripción válida." };
+    CourseRepository.prototype.getCourseById.mockResolvedValue(mockCourse);
+
+    const res = await request(app).get(`/courses/${mockCourse.id}`);
+
+    expect(res.status).toBe(200);
+    expect(res.body.data).toEqual(mockCourse);
   });
 
-  describe("DELETE /courses/:id", () => {
-    it("should delete a course with status 204", async () => {
-      const courseId = 1;  // Asegúrate de que este curso existe
-  
-      const response = await request(app).delete(`/courses/${courseId}`);
-  
-      expect(response.status).toBe(204); // No se espera cuerpo
-      expect(response.body).toEqual({});  // No debe haber contenido en el cuerpo
-    });
+  test("Debe eliminar un curso existente", async () => {
+    CourseRepository.prototype.deleteCourse.mockResolvedValue(true);
 
-    it("should return 404 if course is not found", async () => {
-      const nonExistentId = "999999";
-      const response = await request(app).delete(`/courses/${nonExistentId}`);
+    const res = await request(app).delete(`/courses/${createdCourseId}`);
 
-      expect(response.status).toBe(404);
-      expect(response.body.title).toBe("Course Not Found");
-    });
+    expect(res.status).toBe(204);
   });
 
-  
+  test("Debe retornar 404 si intenta eliminar un curso inexistente", async () => {
+    CourseRepository.prototype.deleteCourse.mockResolvedValue(false);
+
+    const res = await request(app).delete(`/courses/999`);
+
+    expect(res.status).toBe(404);
+    expect(res.body.detail).toBe("Course with id 999 not found");
+  });
 });

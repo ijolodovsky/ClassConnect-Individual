@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const courseController = require('./controllers/courseController'); // Ruta donde están las rutas de los cursos
-const errorMiddleware = require('./middleware/errorMiddleware'); // Importamos el middleware de errores
+const { errorMiddleware } = require('./middleware/errorMiddleware'); // Importamos el middleware de errores
 
 // Middleware para parsear el cuerpo de las solicitudes
 app.use(express.json());
