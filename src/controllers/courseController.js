@@ -7,6 +7,22 @@ const logger = require("../logger");
 const courseService = new CourseService();
 const router = Router();
 
+/**
+ * @route   GET /courses
+ * @desc    Obtiene la lista de todos los cursos disponibles.
+ * @access  Público
+ * @return  { data: Course[] }
+ * @example
+ *  Request: GET /courses
+ *  
+ *  Response:
+ *  {
+ *    "data": [
+ *      { "id": 1, "title": "JavaScript Basics", "description": "Curso de introducción a JS" },
+ *      { "id": 2, "title": "Node.js Fundamentals", "description": "Curso sobre Node.js" }
+ *    ]
+ *  }
+ */
 router.get("/", async (req, res, next) => {
   try {
     const courses = await courseService.getAllCourses();
@@ -17,6 +33,24 @@ router.get("/", async (req, res, next) => {
   }
 });
 
+/**
+ * @route   GET /courses/:id
+ * @desc    Obtiene un curso específico por su ID.
+ * @access  Público
+ * @param   {string} id - ID del curso a obtener.
+ * @return  { data: Course }
+ * @example
+ *  Request: GET /courses/1
+ *  
+ *  Response:
+ *  {
+ *    "data": {
+ *      "id": 1,
+ *      "title": "JavaScript Basics",
+ *      "description": "Curso de introducción a JS"
+ *    }
+ *  }
+ */
 router.get("/:id", async (req, res, next) => {
   try {
     const course = await courseService.getCourseById(req.params.id);
@@ -31,6 +65,28 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
+/**
+ * @route   POST /courses
+ * @desc    Crea un nuevo curso.
+ * @access  Público
+ * @body    { title: string, description: string (50-255 caracteres) }
+ * @return  { data: Course }
+ * @example
+ *  Request:
+ *  {
+ *    "title": "JavaScript Basics",
+ *    "description": "Un curso introductorio sobre JavaScript"
+ *  }
+ *  
+ *  Response:
+ *  {
+ *    "data": {
+ *      "id": 1,
+ *      "title": "JavaScript Basics",
+ *      "description": "Un curso introductorio sobre JavaScript"
+ *    }
+ *  }
+ */
 router.post("/", async (req, res, next) => {
   try {
     const { title, description } = req.body;
@@ -55,6 +111,17 @@ router.post("/", async (req, res, next) => {
   }
 });
 
+/**
+ * @route   DELETE /courses/:id
+ * @desc    Elimina un curso por su ID.
+ * @access  Público
+ * @param   {string} id - ID del curso a eliminar.
+ * @return  { status: 204 } (No Content)
+ * @example
+ *  Request: DELETE /courses/1
+ *  
+ *  Response: 204 No Content
+ */
 router.delete("/:id", async (req, res, next) => {
   try {
     const courseDeleted = await courseService.deleteCourse(req.params.id);
