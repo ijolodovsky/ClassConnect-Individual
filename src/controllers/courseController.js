@@ -13,7 +13,6 @@ const router = Router();
 /**
  * @route   GET /courses
  * @desc    Obtiene la lista de todos los cursos disponibles.
- * @access  Público
  * @return  { data: Course[] }
  * @example
  *  Request: GET /courses
@@ -39,7 +38,6 @@ router.get("/", async (req, res, next) => {
 /**
  * @route   GET /courses/:id
  * @desc    Obtiene un curso específico por su ID.
- * @access  Público
  * @param   {string} id - ID del curso a obtener.
  * @return  { data: Course }
  * @example
@@ -71,7 +69,6 @@ router.get("/:id", async (req, res, next) => {
 /**
  * @route   POST /courses
  * @desc    Crea un nuevo curso.
- * @access  Público
  * @body    { title: string, description: string (50-255 caracteres) }
  * @return  { data: Course }
  * @example
@@ -123,7 +120,6 @@ router.post("/", async (req, res, next) => {
 /**
  * @route   DELETE /courses/:id
  * @desc    Elimina un curso por su ID.
- * @access  Público
  * @param   {string} id - ID del curso a eliminar.
  * @return  { status: 204 } (No Content)
  * @example
