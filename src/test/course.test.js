@@ -9,12 +9,12 @@ describe("ClassConnect API", () => {
   let server;
 
   beforeAll(() => {
-    process.env.NODE_ENV = "test"; // Asegura que estamos en modo test
-    server = app.listen(3001); // Inicia el servidor en un puerto de prueba
+    process.env.NODE_ENV = "test";
+    server = app.listen(3001);
   });
 
   afterAll(() => {
-    server.close(); // Cierra el servidor después de los tests
+    server.close();
   });
 
   beforeEach(() => {
@@ -51,7 +51,7 @@ describe("ClassConnect API", () => {
   });
 
   test("Debe retornar 400 si la descripción tiene menos de 50 caracteres", async () => {
-    const invalidCourse = { title: "Node.js Curso", description: "Corta" }; // Descripción de solo 6 caracteres
+    const invalidCourse = { title: "Node.js Curso", description: "Corta" };
 
     const res = await request(app).post("/courses").send(invalidCourse);
 
@@ -64,8 +64,8 @@ describe("ClassConnect API", () => {
   test("Debe retornar 400 si la descripción tiene más de 255 caracteres", async () => {
     const invalidCourse = {
       title: "Node.js Curso",
-      description: "A".repeat(256),
-    }; // Descripción de 256 caracteres
+      description: "E".repeat(256),
+    };
 
     const res = await request(app).post("/courses").send(invalidCourse);
 
@@ -91,7 +91,7 @@ describe("ClassConnect API", () => {
 
   test("Debe retornar 404 si no se encuentra un curso por ID", async () => {
     const nonExistentCourseId = 999;
-    CourseRepository.prototype.getCourseById.mockResolvedValue(null); // No se encuentra el curso
+    CourseRepository.prototype.getCourseById.mockResolvedValue(null);
 
     const res = await request(app).get(`/courses/${nonExistentCourseId}`);
 
@@ -111,7 +111,7 @@ describe("ClassConnect API", () => {
 
   test("Debe retornar 404 si intenta eliminar un curso inexistente", async () => {
     const nonExistentCourseId = 999;
-    CourseRepository.prototype.deleteCourse.mockResolvedValue(false); // No se encuentra el curso
+    CourseRepository.prototype.deleteCourse.mockResolvedValue(false);
 
     const res = await request(app).delete(`/courses/${nonExistentCourseId}`);
 
