@@ -30,6 +30,7 @@ Antes de levantar el entorno de desarrollo, asegurarse de tener instalados los s
 - **NPM**: Versión 10.5.0
 
 ## Guía de usuario - Librería de tests
+
 - **Jest** (https://jestjs.io/docs/getting-started): Librería utilizada para realizar pruebas de la API.
 
 ## Comandos para construir la imagen de Docker
@@ -47,8 +48,8 @@ Para correr la base de datos PostgreSQL dentro de un contenedor Docker, utiliza 
 ```bash
 docker-compose up db
 ```
-Este comando iniciará el contenedor de la base de datos PostgreSQL, que se ejecutará en el puerto 5432 dentro del contenedor.
 
+Este comando iniciará el contenedor de la base de datos PostgreSQL, que se ejecutará en el puerto 5432 dentro del contenedor.
 
 ## Comandos para correr el servicio
 
@@ -67,6 +68,7 @@ Para ejecutar las pruebas, se usa el siguiente comando:
 ```bash
 docker-compose run --rm -e NODE_ENV=test app npm test
 ```
+
 Donde run --rm inicia un nuevo contenedor temporalmente y lo elimina al finalizar para correr los tests.
 
 ## Detener los contenedores

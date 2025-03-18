@@ -1,7 +1,10 @@
 const CourseService = require("../services/courseService.js");
 const Course = require("../entities/course.js");
 const { Router } = require("express");
-const { NotFoundError, ValidationError } = require("../middleware/errorMiddleware");
+const {
+  NotFoundError,
+  ValidationError,
+} = require("../middleware/errorMiddleware");
 const logger = require("../logger");
 
 const courseService = new CourseService();
@@ -14,7 +17,7 @@ const router = Router();
  * @return  { data: Course[] }
  * @example
  *  Request: GET /courses
- *  
+ *
  *  Response:
  *  {
  *    "data": [
@@ -41,7 +44,7 @@ router.get("/", async (req, res, next) => {
  * @return  { data: Course }
  * @example
  *  Request: GET /courses/1
- *  
+ *
  *  Response:
  *  {
  *    "data": {
@@ -77,7 +80,7 @@ router.get("/:id", async (req, res, next) => {
  *    "title": "JavaScript Basics",
  *    "description": "Un curso introductorio sobre JavaScript"
  *  }
- *  
+ *
  *  Response:
  *  {
  *    "data": {
@@ -97,14 +100,20 @@ router.post("/", async (req, res, next) => {
     }
 
     if (description.length < 50 || description.length > 255) {
-      logger.warn(`Validation failed: Description length (${description.length}) is invalid`);
-      throw new ValidationError("Description must be between 50 and 255 characters");
+      logger.warn(
+        `Validation failed: Description length (${description.length}) is invalid`
+      );
+      throw new ValidationError(
+        "Description must be between 50 and 255 characters"
+      );
     }
 
     const course = new Course(null, title, description);
     const courseCreated = await courseService.createCourse(course);
-    
-    logger.info(`Created course with title "${title}" and id ${courseCreated.id}`);
+
+    logger.info(
+      `Created course with title "${title}" and id ${courseCreated.id}`
+    );
     res.status(201).json({ data: courseCreated });
   } catch (error) {
     next(error);
@@ -119,14 +128,16 @@ router.post("/", async (req, res, next) => {
  * @return  { status: 204 } (No Content)
  * @example
  *  Request: DELETE /courses/1
- *  
+ *
  *  Response: 204 No Content
  */
 router.delete("/:id", async (req, res, next) => {
   try {
     const courseDeleted = await courseService.deleteCourse(req.params.id);
     if (!courseDeleted) {
-      logger.warn(`Attempted to delete non-existent course with id ${req.params.id}`);
+      logger.warn(
+        `Attempted to delete non-existent course with id ${req.params.id}`
+      );
       throw new NotFoundError(`Course with id ${req.params.id} not found`);
     }
 
