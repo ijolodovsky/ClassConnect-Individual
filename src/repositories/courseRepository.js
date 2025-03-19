@@ -19,7 +19,7 @@ class CourseRepository {
   async getAllCourses() {
     let returnEntity = null;
     try {
-      const sql = "SELECT * FROM courses";
+      const sql = "SELECT * FROM courses ORDER BY id DESC";
       const result = await this.DBClient.query(sql);
 
       if (result.rowCount > 0) {
