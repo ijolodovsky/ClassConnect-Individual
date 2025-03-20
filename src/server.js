@@ -29,6 +29,7 @@ if (!PORT) {
 if (process.env.NODE_ENV !== "test") {
   app.listen(PORT, () => {
     console.log(`Server running on PORT:${PORT}`);
+    console.log(`swagger running on http://localhost:${PORT}/api-docs`);
   });
 }
 
