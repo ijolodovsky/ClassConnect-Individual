@@ -2,7 +2,6 @@ const winston = require("winston");
 const fs = require("fs");
 const path = require("path");
 
-// Crear la carpeta logs si no existe
 const logDir = path.join(__dirname, "logs");
 if (!fs.existsSync(logDir)) {
   fs.mkdirSync(logDir);

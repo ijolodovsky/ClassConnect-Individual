@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 const swaggerUi = require("swagger-ui-express");
-const swaggerDocument = require("../swagger-output.json"); // Importa el archivo generado
+const swaggerDocument = require("../swagger-output.json");
 
 const express = require("express");
 const app = express();
