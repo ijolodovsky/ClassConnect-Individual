@@ -12,7 +12,7 @@ const doc = {
     title: "API de Cursos",
     description: "Documentación de la API de cursos",
   },
-  host: "localhost:3000",
+  host: `localhost:${process.env.PORT || 3000}`,
   schemes: ["http"],
 };
 
