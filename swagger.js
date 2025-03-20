@@ -2,7 +2,10 @@ const swaggerAutogen = require("swagger-autogen")();
 const dotenv = require("dotenv");
 
 const outputFile = "./swagger-output.json";
-const endpointsFiles = ["./src/server.js", "./src/controllers/courseController.js"]; // Tus archivos de rutas
+const endpointsFiles = [
+  "./src/server.js",
+  "./src/controllers/courseController.js",
+];
 
 const doc = {
   info: {
