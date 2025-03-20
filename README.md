@@ -1,4 +1,4 @@
-# Proyecto API con Docker
+# Proyecto API ClassConnect con Docker
 
 ## Tabla de Contenido
 
