@@ -49,7 +49,7 @@ Para correr la base de datos PostgreSQL dentro de un contenedor Docker, utiliza 
 docker-compose up db
 ```
 
-Este comando iniciará el contenedor de la base de datos PostgreSQL, que se ejecutará en el puerto 5432 dentro del contenedor.
+Este comando iniciará el contenedor de la base de datos PostgreSQL.
 
 ## Comandos para correr el servicio
 
@@ -59,7 +59,7 @@ Una vez que la base de datos esté corriendo, se puede iniciar el servicio de la
 docker-compose up app
 ```
 
-Este comando iniciará el contenedor de la API en el puerto 3000. La API ahora estará accesible en http://localhost:3000.
+Este comando iniciará el contenedor de la API en el puerto declarado en el .env
 
 ## Pruebas
 
