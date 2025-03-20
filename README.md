@@ -18,7 +18,7 @@ Este proyecto consiste en una API RESTful construida con Node.js que permite la 
 
 ## Lo más desafiante
 
-Lo más desafiante de este proyecto fue configurar y asegurar la comunicación entre la API y la base de datos PostgreSQL dentro de un entorno Dockerizado. La integración de contenedores para que trabajen de manera fluida, con especial atención a la persistencia de los datos y la configuración adecuada de las variables de entorno, presentó algunos retos. Además, garantizar que las pruebas E2E funcionen correctamente en este entorno fue otro desafío importante.
+Lo más desafiante de este proyecto fue configurar y asegurar la comunicación entre la API y la base de datos PostgreSQL dentro de un entorno Dockerizado. La integración de contenedores para que trabajen de manera fluida, con la persistencia de los datos y la configuración adecuada de las variables de entorno, presentó algunos deafios. Además, garantizar que las pruebas funcionen correctamente en este entorno fue otro desafío importante.
 
 ## Pre-requisitos
 
