@@ -26,8 +26,6 @@ Antes de levantar el entorno de desarrollo, asegurarse de tener instalados los s
 
 - **Docker**: Versión 27.5.1
 - **Docker Compose**: Versión 2.32.4
-- **Node.js**: Versión 20.10.0
-- **NPM**: Versión 10.5.0
 
 ## Guía de usuario - Librería de tests
 
